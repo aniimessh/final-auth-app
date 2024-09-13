@@ -1,21 +1,16 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import cookieParser from "cookie-parser";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
-import connectDB from "./db/connectDB.js";
+const { v2: cloudinary } = require("cloudinary");
 
-import { v2 as cloudinary } from "cloudinary";
-import path from "path";
-
-import user from "./routes/user.js";
+const auth = require("./routes/auth-route.js");
 
 dotenv.config();
-connectDB();
 
 const app = express();
 const port = process.env.PORT || 5000;
-const __dirname = path.resolve();
 
 cloudinary.config({
   cloud_name: process.env.CLOUDNARY_CLOUD_NAME,
@@ -23,7 +18,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDNARY_API_SECRET,
 });
 
-Middlewares;
 app.use(
   cors({
     origin: "http://localhost:3000",
@@ -36,7 +30,15 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
 
 // Routes
-app.use("/api/users", user);
+app.use("/api/v1/auth", auth);
+
+app.use("*", (req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+app.get("/", (req, res) => {
+  res.send("Yes! Server is up and running");
+});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
