@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const { v2: cloudinary } = require("cloudinary");
 
 const authRoute = require("./routes/auth-route.js");
+const userRoute = require("./routes/user-route.js");
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/user", userRoute);
 
 app.use("*", (req, res) => {
   res.status(404).json({ message: "Route not found" });

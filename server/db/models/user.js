@@ -1,5 +1,5 @@
 "use strict";
-const { Model, Sequelize } = require("sequelize");
+const { Sequelize } = require("sequelize");
 const sequelize = require("../../config/connectionDB");
 
 module.exports = sequelize.define(
@@ -14,16 +14,16 @@ module.exports = sequelize.define(
     userType: {
       type: Sequelize.ENUM("admin", "user", "seller"),
     },
-    firstName: {
+    fullName: {
       type: Sequelize.STRING,
     },
-    lastName: {
-      type: Sequelize.STRING,
-    },
-    email: {
+    mobileNo: {
       type: Sequelize.STRING,
     },
     password: {
+      type: Sequelize.STRING,
+    },
+    profileUrl: {
       type: Sequelize.STRING,
     },
     createdAt: {

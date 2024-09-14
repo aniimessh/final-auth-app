@@ -12,16 +12,16 @@ module.exports = {
       userType: {
         type: Sequelize.ENUM("admin", "user", "seller"),
       },
-      firstName: {
+      fullName: {
         type: Sequelize.STRING,
       },
-      lastName: {
-        type: Sequelize.STRING,
-      },
-      email: {
+      mobileNo: {
         type: Sequelize.STRING,
       },
       password: {
+        type: Sequelize.STRING,
+      },
+      profileUrl: {
         type: Sequelize.STRING,
       },
       createdAt: {

@@ -1,26 +1,18 @@
-const { where } = require("sequelize");
 const user = require("../db/models/user");
 const bcrypt = require("bcryptjs");
 const { generateTokenAndSetCookie } = require("../utils/headers/jwtToken");
 const signupUser = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, confirmPassword, userType } =
+    const { fullName, mobileNo, password, confirmPassword, userType } =
       req.body;
 
-    if (
-      !firstName ||
-      !lastName ||
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !userType
-    ) {
+    if (!fullName || !mobileNo || !password || !confirmPassword || !userType) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const existingUser = await user.findOne({ where: { email } });
+    const existingUser = await user.findOne({ where: { mobileNo } });
     if (existingUser) {
-      return res.status(400).json({ message: "Email already exists" });
+      return res.status(400).json({ message: "Phone number already exists" });
     }
 
     if (password.length < 6) {
@@ -41,9 +33,8 @@ const signupUser = async (req, res) => {
 
     const newUser = await user.create({
       userType,
-      firstName,
-      lastName,
-      email,
+      fullName,
+      mobileNo,
       password: hashedPassword,
     });
 
@@ -64,16 +55,16 @@ const signupUser = async (req, res) => {
 
 const signinUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { mobileNo, password } = req.body;
 
-    if (!email || !password) {
+    if (!mobileNo || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const existingUser = await user.findOne({ where: { email } });
+    const existingUser = await user.findOne({ where: { mobileNo } });
 
     if (!existingUser) {
-      return res.status(400).json({ message: "Email not found" });
+      return res.status(400).json({ message: "Mobile number not found" });
     }
 
     const isMatch = await bcrypt.compare(password, existingUser.password);
