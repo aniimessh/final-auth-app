@@ -95,4 +95,14 @@ const signinUser = async (req, res) => {
   }
 };
 
-module.exports = { signupUser, signinUser };
+const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("jwt");
+    return res.status(200).json({ message: "user logged out successfully" });
+  } catch (error) {
+    console.log("error in logout controller", error.message);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { signupUser, signinUser, logoutUser };

@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 
 const { v2: cloudinary } = require("cloudinary");
 
-const auth = require("./routes/auth-route.js");
+const authRoute = require("./routes/auth-route.js");
 
 dotenv.config();
 
@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
 
 // Routes
-app.use("/api/v1/auth", auth);
+app.use("/api/v1/auth", authRoute);
 
 app.use("*", (req, res) => {
   res.status(404).json({ message: "Route not found" });
