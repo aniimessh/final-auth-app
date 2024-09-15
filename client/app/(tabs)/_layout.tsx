@@ -1,12 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
+import { StyleSheet } from "react-native";
+import React from "react";
 import { Tabs } from "expo-router";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import { HeartIcon, HomeIcon, OfferIcon } from "@/constants/Icon";
 
 const RootLayout = () => {
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
