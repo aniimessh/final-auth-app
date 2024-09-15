@@ -1,9 +1,8 @@
 "use strict";
-const { Sequelize } = require("sequelize");
+const { Model, Sequelize } = require("sequelize");
 const sequelize = require("../../config/connectionDB");
-
 module.exports = sequelize.define(
-  "user",
+  "address",
   {
     id: {
       type: Sequelize.UUID,
@@ -11,25 +10,33 @@ module.exports = sequelize.define(
       allowNull: false,
       primaryKey: true,
     },
-    userType: {
-      type: Sequelize.ENUM("admin", "user", "seller"),
-      allowNull: false,
+    userId: {
+      type: Sequelize.UUID,
+      references: {
+        model: "user",
+        key: "id",
+      },
+      onDelete: "CASCADE",
     },
-    fullName: {
+    street: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    mobileNo: {
-      type: Sequelize.STRING,
-      unique: true,
-      allowNull: false,
-    },
-    password: {
+    city: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    profileUrl: {
+    state: {
       type: Sequelize.STRING,
+      allowNull: false,
+    },
+    zipCode: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    country: {
+      type: Sequelize.STRING,
+      allowNull: false,
     },
     createdAt: {
       allowNull: false,
@@ -39,13 +46,17 @@ module.exports = sequelize.define(
       allowNull: false,
       type: Sequelize.DATE,
     },
-    deletedAt: {
-      type: Sequelize.DATE,
-    },
   },
   {
+    associations: () => ({
+      user: {
+        foreignKey: "userId",
+        targetKey: "id",
+        onDelete: "CASCADE",
+      },
+    }),
     paranoid: true,
     freezeTableName: true,
-    modelName: "user",
+    modelName: "address",
   }
 );

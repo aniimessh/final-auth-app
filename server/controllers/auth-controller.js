@@ -31,9 +31,12 @@ const signupUser = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const profileAvatar = `https://api.dicebear.com/9.x/initials/svg?seed=${fullName}`;
+
     const newUser = await user.create({
       userType,
       fullName,
+      profileUrl: profileAvatar,
       mobileNo,
       password: hashedPassword,
     });

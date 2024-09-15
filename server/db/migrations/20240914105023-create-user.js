@@ -11,15 +11,20 @@ module.exports = {
       },
       userType: {
         type: Sequelize.ENUM("admin", "user", "seller"),
+        allowNull: false,
       },
       fullName: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       mobileNo: {
         type: Sequelize.STRING,
+        unique: true,
+        allowNull: false,
       },
       password: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       profileUrl: {
         type: Sequelize.STRING,
@@ -41,3 +46,5 @@ module.exports = {
     await queryInterface.dropTable("user");
   },
 };
+
+// TODO: migration of this file, delete this and create a new one
