@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import { HeartIcon, HomeIcon, OfferIcon } from "@/constants/Icon";
+import LoginSignupModal from "@/components/modals/login-signup";
 
 const RootLayout = () => {
   return (

@@ -19,7 +19,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permission": [
+        "android.permissions.READ_PHONE_STATE"
+      ]
     },
     "web": {
       "bundler": "metro",
