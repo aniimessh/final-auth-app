@@ -16,7 +16,7 @@ import LoginSignupModal from "@/components/modals/login-signup";
 import { StyleSheet, View } from "react-native";
 
 const RootLayout = () => {
-  const [isAuth, setIsAuth] = useState<boolean>(true);
+  const [isAuth, setIsAuth] = useState<boolean>(false);
 
   const [fonts] = useFonts({
     Outfit_100Thin,
@@ -37,7 +37,7 @@ const RootLayout = () => {
   return (
     <>
       <View style={[styles.container]}>
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack screenOptions={{ headerShown: false, statusBarStyle: "dark" }}>
           <Stack.Screen name="(tabs)" />
         </Stack>
       </View>
