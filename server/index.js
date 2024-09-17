@@ -38,6 +38,10 @@ app.use("*", (req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
+app.use((err, req, res) => {
+  res.status(400).json({ message: err.message });
+});
+
 app.get("/", (req, res) => {
   res.send("Yes! Server is up and running");
 });

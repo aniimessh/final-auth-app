@@ -53,4 +53,12 @@ const updateAddress = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+  } catch (error) {
+    console.log("error in updateUser controller", error.message);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = { getUserById, updateAddress };

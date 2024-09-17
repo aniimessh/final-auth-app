@@ -1,6 +1,7 @@
 const user = require("../db/models/user");
 const bcrypt = require("bcryptjs");
 const { generateTokenAndSetCookie } = require("../utils/headers/jwtToken");
+const { verifyOtp, sendOtpViaMobile } = require("../utils/otp");
 const signupUser = async (req, res) => {
   try {
     const { fullName, mobileNo, password, confirmPassword, userType } =
@@ -99,4 +100,49 @@ const logoutUser = async (req, res) => {
   }
 };
 
-module.exports = { signupUser, signinUser, logoutUser };
+const signInWithOtp = async (req, res) => {
+  try {
+    const { mobileNo } = req.body;
+    if (!mobileNo) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const verificationSid = await sendOtpViaMobile(mobileNo);
+
+    if (!verificationSid) {
+      return res.status(400).json({ message: "Failed to send OTP" });
+    }
+
+    return res
+      .status(200)
+      .json({ verificationSid, message: "OTP sent successfully" });
+  } catch (error) {
+    console.log("error in signInWithOtp controller", error.message);
+    return res.status(500).json({ error: error.message });
+  }
+};
+const verifyMobileOtp = async (req, res) => {
+  try {
+    const { mobileNo, otp } = req.body;
+    if (!mobileNo || !otp) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const isValid = await verifyOtp(mobileNo, otp);
+
+    if (!isValid) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    return res.status(200).json({ message: "OTP verified successfully" });
+  } catch (error) {
+    console.log("error in verifyOtp controller", error.message);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  signupUser,
+  signinUser,
+  logoutUser,
+  signInWithOtp,
+  verifyMobileOtp,
+};
