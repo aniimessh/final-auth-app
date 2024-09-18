@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { sendOTPAPI } from "../api/signupLogin";
 
-export const sendOTP = createAsyncThunk("sendOTP", async (payload) => {
+export const sendOTP = createAsyncThunk("sendOTP", async (payload: string) => {
   const response = await sendOTPAPI(payload);
-  console.log(response);
+  console.log("response", response);
   if (!response) {
     return "Error while sending OTP";
   }
@@ -35,7 +35,7 @@ const authSlice = createSlice({
     builder.addCase(sendOTP.rejected, (state, action) => {
       state.status = "failed";
       state.data = null;
-      state.message = action.payload?.message;
+      state.message = action?.payload?.message;
     });
   },
   // verify-otp

@@ -18,8 +18,6 @@ import { Provider } from "react-redux";
 import store from "../redux/store";
 
 const RootLayout = () => {
-  const [isAuth, setIsAuth] = useState<boolean>(false);
-
   const [fonts] = useFonts({
     Outfit_100Thin,
     Outfit_200ExtraLight,
@@ -44,7 +42,7 @@ const RootLayout = () => {
             <Stack.Screen name="(tabs)" />
           </Stack>
         </View>
-        <LoginSignupModal  />
+        <LoginSignupModal />
         {/* {isAuth && <LoginSignupModal setIsAuth={setIsAuth} isAuth={isAuth} />} */}
       </Provider>
     </>

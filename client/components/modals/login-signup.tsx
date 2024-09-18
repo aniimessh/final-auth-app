@@ -4,14 +4,22 @@ import CTAButton from "@/ui/Button";
 import { router } from "expo-router";
 import OTPVerificationModal from "./otp-verification";
 import { useDispatch, useSelector } from "react-redux";
-import { sendOTP } from "../../redux/slices/authSlice";
+import { sendOTP } from "@/redux/slices/authSlice";
 
 const LoginSignupModal = () => {
-  const { isVerified, otpsent, status } = useSelector(
+  const { isVerified, otpsent, status, message } = useSelector(
     (state: {
-      auth: { isVerified: boolean; otpsent: boolean; status: string };
+      auth: {
+        isVerified: boolean;
+        otpsent: boolean;
+        status: string;
+        message: string;
+      };
     }) => state.auth
   );
+  if (status === "success") {
+    ToastAndroid.show(message, ToastAndroid.BOTTOM);
+  }
 
   const [email, setEmail] = useState("");
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -28,7 +36,6 @@ const LoginSignupModal = () => {
       ToastAndroid.show("Enter an email", ToastAndroid.BOTTOM);
       return;
     }
-
     if (!isValidEmail(email)) {
       ToastAndroid.show("Enter a valid email address", ToastAndroid.BOTTOM);
       return;
@@ -64,8 +71,9 @@ const LoginSignupModal = () => {
             </Text>
             <TextInput
               textContentType="emailAddress"
-              className="border-b-2 border-green py-2 mt-2"
+              className="border-b-2 border-green py-1"
               value={email}
+              keyboardType="email-address"
               onChangeText={setEmail}
               style={{ fontFamily: "Outfit_400Regular" }}
             />
