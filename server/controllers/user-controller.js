@@ -1,5 +1,5 @@
-const address = require("../db/models/address");
-const user = require("../db/models/user");
+// const address = require("../db/models/address");
+// const user = require("../db/models/user");
 
 const getUserById = async (req, res) => {
   try {

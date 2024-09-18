@@ -7,8 +7,10 @@ const { v2: cloudinary } = require("cloudinary");
 
 const authRoute = require("./routes/auth-route.js");
 const userRoute = require("./routes/user-route.js");
+const connectDB = require("./db/connectMongo.js");
 
 dotenv.config();
+connectDB();
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -34,16 +36,16 @@ app.use(cookieParser());
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/user", userRoute);
 
-app.use("*", (req, res) => {
-  res.status(404).json({ message: "Route not found" });
+app.get("/", (req, res) => {
+  res.send("Yes! Server is up and running");
 });
 
 app.use((err, req, res) => {
   res.status(400).json({ message: err.message });
 });
 
-app.get("/", (req, res) => {
-  res.send("Yes! Server is up and running");
+app.use("*", (req, res) => {
+  res.status(404).json({ message: "Route not found" });
 });
 
 app.listen(port, () => {

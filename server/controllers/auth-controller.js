@@ -1,7 +1,11 @@
-const user = require("../db/models/user");
 const bcrypt = require("bcryptjs");
 const { generateTokenAndSetCookie } = require("../utils/headers/jwtToken");
-const { verifyOtp, sendOtpViaMobile } = require("../utils/otp");
+const { verifyOtp, sendOtpViaMail, generateOtp } = require("../utils/otp");
+
+const { User } = require("../models/user-model");
+const { Otp } = require("../models/otp-model");
+
+const { generateAvatar } = require("../utils/utility");
 const signupUser = async (req, res) => {
   try {
     const { fullName, mobileNo, password, confirmPassword, userType } =
@@ -102,37 +106,53 @@ const logoutUser = async (req, res) => {
 
 const signInWithOtp = async (req, res) => {
   try {
-    const { mobileNo } = req.body;
-    if (!mobileNo) {
-      return res.status(400).json({ message: "All fields are required" });
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "email is required" });
     }
-    const verificationSid = await sendOtpViaMobile(mobileNo);
+    const otp = generateOtp();
+    const mailSent = await sendOtpViaMail(email, otp);
 
-    if (!verificationSid) {
+    if (!mailSent) {
       return res.status(400).json({ message: "Failed to send OTP" });
     }
 
-    return res
-      .status(200)
-      .json({ verificationSid, message: "OTP sent successfully" });
+    return res.status(200).json({ message: "OTP sent successfully", otp: otp });
   } catch (error) {
     console.log("error in signInWithOtp controller", error.message);
     return res.status(500).json({ error: error.message });
   }
 };
+
 const verifyMobileOtp = async (req, res) => {
   try {
-    const { mobileNo, otp } = req.body;
-    if (!mobileNo || !otp) {
+    const { email, otp, userType } = req.body;
+    if (!email || !otp || !userType) {
       return res.status(400).json({ message: "All fields are required" });
     }
-    const isValid = await verifyOtp(mobileNo, otp);
+    const isVarified = await verifyOtp(email, otp);
 
-    if (!isValid) {
+    if (!isVarified) {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    return res.status(200).json({ message: "OTP verified successfully" });
+    if (userType !== "user" && userType !== "seller") {
+      return res.status(400).json({ message: "Invalid user type" });
+    }
+
+    await Otp.findOneAndDelete({ email });
+
+    const newUser = new User({
+      userType,
+      email,
+      profilePic: generateAvatar(email),
+    });
+    await newUser.save();
+    const token = generateTokenAndSetCookie(newUser._id, res);
+
+    return res
+      .status(200)
+      .json({ message: "OTP verified successfully", jwt: token });
   } catch (error) {
     console.log("error in verifyOtp controller", error.message);
     return res.status(500).json({ error: error.message });

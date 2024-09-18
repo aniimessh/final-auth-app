@@ -1,36 +1,65 @@
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const serviceToken = process.env.TWILIO_SERVICE_TOKEN;
-const client = require("twilio")(accountSid, authToken);
-const sendOtpViaMobile = async (mobileNo) => {
+const nodemailer = require("nodemailer");
+const { Otp } = require("../models/otp-model");
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // or 'STARTTLS'
+  auth: {
+    user: "masconstech@gmail.com",
+    pass: "uggunqmndceowags",
+  },
+});
+
+const generateOtp = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+const sendOtpViaMail = async (email, OTP) => {
+  const mailOptions = {
+    from: "masconstech@gmail.com",
+    to: email,
+    subject: "OTP for Verification",
+    text: `Your OTP is: ${OTP}`,
+  };
   try {
-    console.log("mobile", mobileNo);
-    const verification = await client.verify.v2
-      .services(serviceToken)
-      .verifications.create({ to: `+91${mobileNo}`, channel: "sms" });
-    console.log("verification", verification);
-    return verification.sid; // Return the verification SID instead of OTP
+    await transporter.sendMail(mailOptions);
+
+    const otpDoc = await Otp.findOne({ email });
+    if (otpDoc) {
+      otpDoc.otp = OTP;
+      await otpDoc.save();
+    } else {
+      const otp = new Otp({ email, otp: OTP });
+      await otp.save();
+    }
+
+    console.log("OTP sent successfully!");
+    return true;
   } catch (error) {
-    console.log("Error while sending OTP ", error.message);
-    throw error;
+    console.log("Error while sending OTP:", error.message);
+    return false;
   }
 };
-const verifyOtp = async (mobileNo, otp) => {
-  try {
-    const verificationCheck = await client.verify.v2
-      .services(serviceToken)
-      .verificationChecks.create({ to: `+91${mobileNo}`, code: otp });
 
-    if (verificationCheck.valid) {
-      console.log("OTP is valid");
-      return true;
-    } else {
-      console.log("OTP is invalid");
-      return false;
+const verifyOtp = async (email, otp) => {
+  try {
+    const dbOTP = await Otp.findOne({ email });
+
+    if (!dbOTP || !dbOTP.otp) {
+      return res
+        .status(400)
+        .json({ message: "Something went wrong with email" });
     }
+    // Verify the OTP
+    if (dbOTP.otp !== otp) {
+      throw new Error("Invalid OTP");
+    }
+    console.log("OTP verified successfully!");
+    return true;
   } catch (error) {
     console.log("Error while verifying OTP ", error.message);
     throw error;
   }
 };
-module.exports = { sendOtpViaMobile, verifyOtp };
+module.exports = { sendOtpViaMail, verifyOtp, generateOtp };
