@@ -1,7 +1,9 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
 import Entypo from "@expo/vector-icons/Entypo";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { router } from "expo-router";
 
 const UserLocation = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(
@@ -51,7 +53,10 @@ const UserLocation = () => {
   }
 
   return (
-    <View>
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={() => router.push("/(root)/locationpage")}
+    >
       {areaName && (
         <View className="p-3 bg-red-500/10 flex-row items-center">
           <Entypo name="location" size={16} color="#9333ea" />
@@ -67,9 +72,10 @@ const UserLocation = () => {
               {areaName} - {areaPincode}{" "}
             </Text>
           </Text>
+          <MaterialIcons name="arrow-forward-ios" size={16} color="black" />
         </View>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

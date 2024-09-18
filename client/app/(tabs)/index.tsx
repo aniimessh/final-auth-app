@@ -15,6 +15,7 @@ import CarouselComponent from "@/components/core/Carousel";
 import UserLocation from "@/components/core/Location";
 
 const HomePage = () => {
+
   return (
     <SafeAreaView className="bg-white">
       <ScrollView>

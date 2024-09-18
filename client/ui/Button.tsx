@@ -5,21 +5,25 @@ type ButtonProps = {
   title: string;
   onPress?: () => void;
   svg?: React.SVGAttributes<SVGElement>;
+  status?: string;
 };
 
-const CTAButton = ({ title, onPress, svg }: ButtonProps) => {
+const CTAButton = ({ title, onPress, svg, status }: ButtonProps) => {
   return (
     <TouchableOpacity
-      className="py-4 mt-3 rounded-lg bg-green w-full"
+      className={`py-4 mt-3 rounded-lg bg-green w-full ${
+        status === "loading" && "opacity-50"
+      }`}
       onPress={onPress}
+      disabled={status === "loading"}
     >
       <Text
-        className="text-center text-white text-xl mr-2"
+        className="text-center text-white text-xl mr-2 tracking-widest"
         style={{
-          fontFamily: "Raleway_300Light",
+          fontFamily: "Outfit_400Regular",
         }}
       >
-        {title}
+        {status === "loading" ? <Text>Sending OTP</Text> : title}
       </Text>
     </TouchableOpacity>
   );

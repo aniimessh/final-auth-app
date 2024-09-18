@@ -14,6 +14,8 @@ import {
 } from "@expo-google-fonts/outfit";
 import LoginSignupModal from "@/components/modals/login-signup";
 import { StyleSheet, View } from "react-native";
+import { Provider } from "react-redux";
+import store from "../redux/store";
 
 const RootLayout = () => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
@@ -36,12 +38,15 @@ const RootLayout = () => {
 
   return (
     <>
-      <View style={[styles.container]}>
-        <Stack screenOptions={{ headerShown: false, statusBarStyle: "dark" }}>
-          <Stack.Screen name="(tabs)" />
-        </Stack>
-      </View>
-      {isAuth && <LoginSignupModal setIsAuth={setIsAuth} isAuth={isAuth} />}
+      <Provider store={store}>
+        <View style={[styles.container]}>
+          <Stack screenOptions={{ headerShown: false, statusBarStyle: "dark" }}>
+            <Stack.Screen name="(tabs)" />
+          </Stack>
+        </View>
+        <LoginSignupModal  />
+        {/* {isAuth && <LoginSignupModal setIsAuth={setIsAuth} isAuth={isAuth} />} */}
+      </Provider>
     </>
   );
 };

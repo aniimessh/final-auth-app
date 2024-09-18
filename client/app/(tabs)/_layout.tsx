@@ -3,6 +3,8 @@ import React from "react";
 import { Tabs } from "expo-router";
 import { HeartIcon, HomeIcon, OfferIcon, OrderBox } from "@/constants/Icon";
 import LoginSignupModal from "@/components/modals/login-signup";
+import { Provider } from "react-redux";
+import store from "@/redux/store";
 
 const RootLayout = () => {
   return (
@@ -15,7 +17,6 @@ const RootLayout = () => {
       <Tabs.Screen
         name="index"
         options={{
-          
           tabBarIcon: () => <HomeIcon />,
         }}
       />
