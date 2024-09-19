@@ -1,8 +1,6 @@
 const express = require("express");
 
 const {
-  signupUser,
-  signinUser,
   logoutUser,
   signInWithOtp,
   verifyMobileOtp,
@@ -10,11 +8,8 @@ const {
 
 const router = express.Router();
 
-router.post("/signup", signupUser);
-router.post("/signin", signinUser);
-router.post("/logout", logoutUser);
-
 router.post("/send-otp", signInWithOtp);
 router.post("/verify-otp", verifyMobileOtp);
+router.post("/logout", logoutUser);
 
 module.exports = router;

@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
-const { v2: cloudinary } = require("cloudinary");
+// const { v2: cloudinary } = require("cloudinary");
 
 const authRoute = require("./routes/auth-route.js");
 const userRoute = require("./routes/user-route.js");
@@ -15,11 +15,11 @@ connectDB();
 const app = express();
 const port = process.env.PORT || 5000;
 
-cloudinary.config({
-  cloud_name: process.env.CLOUDNARY_CLOUD_NAME,
-  api_key: process.env.CLOUDNARY_API_KEY,
-  api_secret: process.env.CLOUDNARY_API_SECRET,
-});
+// cloudinary.config({
+//   cloud_name: process.env.CLOUDNARY_CLOUD_NAME,
+//   api_key: process.env.CLOUDNARY_API_KEY,
+//   api_secret: process.env.CLOUDNARY_API_SECRET,
+// });
 
 app.use(
   cors({
