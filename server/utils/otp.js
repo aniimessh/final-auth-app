@@ -51,7 +51,6 @@ const verifyOtp = async (email, otp) => {
         .status(400)
         .json({ message: "Something went wrong with email" });
     }
-    // Verify the OTP
     if (dbOTP.otp !== otp) {
       throw new Error("Invalid OTP");
     }

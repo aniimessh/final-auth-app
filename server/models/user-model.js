@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
     userType: {
       type: String,
       enum: ["user", "seller", "admin"],
-      required: true,
+      default: "user",
     },
     email: {
       type: String,
@@ -24,14 +24,32 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
       enum: ["male", "female", "other"],
+      default: null,
     },
-    mobileNo: {
+    primaryMobileNo: {
       type: String,
-      unique: true,
+      default: null,
     },
-    password: {
+    secondaryMobileNo: {
       type: String,
+      default: null,
     },
+    addresses: [
+      {
+        street: {
+          type: String,
+        },
+        city: {
+          type: String,
+        },
+        state: {
+          type: String,
+        },
+        zip: {
+          type: String,
+        },
+      },
+    ],
   },
   {
     timestamps: true,

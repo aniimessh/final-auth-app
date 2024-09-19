@@ -29,8 +29,8 @@ const signInWithOtp = async (req, res) => {
 
 const verifyMobileOtp = async (req, res) => {
   try {
-    const { email, otp, userType } = req.body;
-    if (!email || !otp || !userType) {
+    const { email, otp } = req.body;
+    if (!email || !otp) {
       return res.status(400).json({ message: "All fields are required" });
     }
     const isVerified = await verifyOtp(email, otp);
@@ -39,17 +39,13 @@ const verifyMobileOtp = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    if (userType !== "user" && userType !== "seller") {
-      return res.status(400).json({ message: "Invalid user type" });
-    }
-
     await Otp.findOneAndDelete({ email });
 
     const newUser = new User({
-      userType,
       email,
       profilePic: generateAvatar(email),
     });
+    console.log(newUser);
     await newUser.save();
     const token = generateTokenAndSetCookie(newUser._id, res);
 
