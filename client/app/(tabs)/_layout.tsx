@@ -1,12 +1,22 @@
 import { StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Tabs } from "expo-router";
-import { HeartIcon, HomeIcon, OfferIcon, OrderBox } from "@/constants/Icon";
-import LoginSignupModal from "@/components/modals/login-signup";
-import { Provider } from "react-redux";
-import store from "@/redux/store";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useDispatch, useSelector } from "react-redux";
+import { checkJWTToken } from "@/redux/slices/authSlice";
 
 const RootLayout = () => {
+  const { isVerified } = useSelector(
+    (state: { auth: { isVerified: boolean } }) => state.auth
+  );
+  console.log("is verifdies in index", isVerified);
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const dispatch = useDispatch<any>();
+  useEffect(() => {
+    dispatch(checkJWTToken());
+  });
   return (
     <Tabs
       screenOptions={{
@@ -17,20 +27,36 @@ const RootLayout = () => {
       <Tabs.Screen
         name="index"
         options={{
-          tabBarIcon: () => <HomeIcon />,
+          tabBarIcon: () => <AntDesign name="home" size={24} color="black" />,
         }}
       />
       <Tabs.Screen
         name="wishlist"
         options={{
-          tabBarIcon: () => <HeartIcon />,
+          tabBarIcon: () => <AntDesign name="hearto" size={24} color="black" />,
         }}
       />
-      <Tabs.Screen name="offer" options={{ tabBarIcon: () => <OfferIcon /> }} />
-      <Tabs.Screen name="cart" />
+      <Tabs.Screen
+        name="offer"
+        options={{
+          tabBarIcon: () => (
+            <Ionicons name="ticket-outline" size={24} color="black" />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="cart"
+        options={{
+          tabBarIcon: () => (
+            <Ionicons name="cart-outline" size={24} color="black" />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="my-order"
-        options={{ tabBarIcon: () => <OrderBox /> }}
+        options={{
+          tabBarIcon: () => <FontAwesome name="cube" size={24} color="black" />,
+        }}
       />
     </Tabs>
   );

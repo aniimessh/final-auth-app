@@ -1,7 +1,9 @@
 import { View, Text, FlatList, Image, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { CategoriesData } from "@/constants/Categories";
+import type { CategoriesData } from "@/constants/Categories";
+import { getCategories } from "@/redux/slices/categoriesSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const categoryItem = ({ item }: { item: (typeof CategoriesData)[number] }) => {
   return (
@@ -18,7 +20,37 @@ const categoryItem = ({ item }: { item: (typeof CategoriesData)[number] }) => {
   );
 };
 
+const SkeletonBanner = () => {
+  return (
+    <View className="px-4">
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        directionalLockEnabled={true}
+        alwaysBounceVertical={false}
+        // key={item}
+      >
+        {[1, 2, 3, 4, 5].map((item) => (
+          <View
+            className="h-16 w-16 bg-gray-500/10 rounded-md mr-4"
+            key={item}
+          />
+        ))}
+      </ScrollView>
+    </View>
+  );
+};
+
 const Categories = () => {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const dispatch = useDispatch<any>();
+  const { categories, status } = useSelector(
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    (state: { category: any; status: string }) => state.category
+  );
+  useEffect(() => {
+    dispatch(getCategories());
+  }, [dispatch]);
   return (
     <SafeAreaView>
       <View>
@@ -31,6 +63,7 @@ const Categories = () => {
         >
           Categories
         </Text>
+        {status === "loading" && <SkeletonBanner />}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -39,11 +72,10 @@ const Categories = () => {
         >
           <FlatList
             alwaysBounceHorizontal
-            numColumns={Math.ceil(CategoriesData.length / 2)}
-            data={CategoriesData}
+            horizontal
+            data={categories?.categories}
             showsHorizontalScrollIndicator={false}
             renderItem={categoryItem}
-            keyExtractor={(item) => item.id.toString()}
           />
         </ScrollView>
       </View>

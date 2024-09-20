@@ -13,18 +13,26 @@ const UserLocation = () => {
   const [areaName, setAreaName] = useState<string | null>(null);
   const [areaPincode, setAreaPinCode] = useState<number | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
+  const getLocation = async () => {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
 
+    try {
       const loc = await Location.getCurrentPositionAsync({});
       setLocation(loc);
       await getAreaName(loc.coords.latitude, loc.coords.longitude);
-    })();
+    } catch (error) {
+      console.error("Error getting location:", error);
+      setErrorMsg("Unable to retrieve location");
+    }
+  };
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    getLocation(); // Fetch location on component mount
   }, []);
 
   const getAreaName = async (latitude: number, longitude: number) => {
@@ -53,29 +61,45 @@ const UserLocation = () => {
   }
 
   return (
-    <TouchableOpacity
-      activeOpacity={1}
-      onPress={() => router.push("/(root)/locationpage")}
-    >
-      {areaName && (
+    <>
+      {areaName ? (
         <View className="p-3 bg-red-500/10 flex-row items-center">
           <Entypo name="location" size={16} color="#9333ea" />
-          <Text
-            className="ml-2"
-            style={{
-              fontFamily: "Outfit_300Light",
-            }}
+          <TouchableOpacity
+            activeOpacity={1}
+            onPress={() => router.push("/(root)/locationpage")}
           >
-            Deliverying to
-            <Text className="font-bold">
-              {" "}
-              {areaName} - {areaPincode}{" "}
+            <Text
+              className="ml-2"
+              style={{
+                fontFamily: "Outfit_300Light",
+              }}
+            >
+              Delivering to
+              <Text className="font-bold">
+                {" "}
+                {areaName} - {areaPincode}{" "}
+              </Text>
             </Text>
-          </Text>
+          </TouchableOpacity>
           <MaterialIcons name="arrow-forward-ios" size={16} color="black" />
         </View>
+      ) : (
+        <View className="p-3 bg-red-500/10 flex-row items-center">
+          <Entypo name="location" size={16} color="#9333ea" />
+          <TouchableOpacity activeOpacity={1} onPress={getLocation}>
+            <Text
+              className="ml-2"
+              style={{
+                fontFamily: "Outfit_300Light",
+              }}
+            >
+              Enable Location
+            </Text>
+          </TouchableOpacity>
+        </View>
       )}
-    </TouchableOpacity>
+    </>
   );
 };
 

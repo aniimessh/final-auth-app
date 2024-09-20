@@ -43,11 +43,6 @@ const LoginSignupModal = () => {
     dispatch(sendOTP(email));
   };
 
-  const handleVerify = () => {
-    console.log("OTP Verified!");
-    router.push("/(tabs)/");
-  };
-
   return (
     <View
       className={`absolute h-full w-full bottom-0 bg-black/30 justify-end z-50 ${
@@ -95,7 +90,7 @@ const LoginSignupModal = () => {
           </View>
         </View>
         {/* Render OTP Verification Modal */}
-        {otpsent && <OTPVerificationModal onVerify={handleVerify} />}
+        {otpsent && <OTPVerificationModal email={email} />}
       </View>
     </View>
   );

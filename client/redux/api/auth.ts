@@ -22,7 +22,8 @@ export const verifyOTPAPI = async (payload: { email: string; otp: string }) => {
       payload
     );
     return response.data;
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   } catch (error: any) {
-    return { error: true, message: error.message };
+    return { error: true, message: error.message ?? "Something went wrong!" };
   }
 };

@@ -15,7 +15,6 @@ import CarouselComponent from "@/components/core/Carousel";
 import UserLocation from "@/components/core/Location";
 
 const HomePage = () => {
-
   return (
     <SafeAreaView className="bg-white">
       <ScrollView>
@@ -23,14 +22,18 @@ const HomePage = () => {
           {/* Profile Container */}
           <View className="flex-row justify-between items-center">
             <View className="flex-row gap-x-2 items-start">
-              <Image
-                source={require("../../assets/images/d_avatar.jpg")}
-                style={{
-                  height: 50,
-                  width: 50,
-                  borderRadius: 99,
-                }}
-              />
+              <TouchableOpacity
+                onPress={() => router.push("/(root)/accountpage")}
+              >
+                <Image
+                  source={require("../../assets/images/d_avatar.jpg")}
+                  style={{
+                    height: 50,
+                    width: 50,
+                    borderRadius: 99,
+                  }}
+                />
+              </TouchableOpacity>
               <View>
                 <Text style={{ fontFamily: "Outfit_300Light" }}>Hello,</Text>
                 <Text style={{ fontFamily: "Outfit_500Medium" }}>

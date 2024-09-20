@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "components/form/SignupForm.tsx", "redux/slices/authSlice.ts", "redux/api/signupLogin.ts"  ]
+, "components/form/SignupForm.tsx", "redux/slices/authSlice.ts", "redux/api/auth.ts"  ]
 }

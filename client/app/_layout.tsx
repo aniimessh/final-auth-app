@@ -43,7 +43,6 @@ const RootLayout = () => {
           </Stack>
         </View>
         <LoginSignupModal />
-        {/* {isAuth && <LoginSignupModal setIsAuth={setIsAuth} isAuth={isAuth} />} */}
       </Provider>
     </>
   );

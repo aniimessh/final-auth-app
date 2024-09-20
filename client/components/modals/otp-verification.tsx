@@ -1,15 +1,27 @@
-import { View, Text, TextInput } from "react-native";
-import React, { useRef, useState } from "react"; // Import tailwind-rn
+import React, { useEffect, useState } from "react";
+import { View, Text, Keyboard } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { verifyOTP } from "@/redux/slices/authSlice";
 import CTAButton from "@/ui/Button";
 import { OtpInput } from "react-native-otp-entry";
+import { router } from "expo-router";
 
-interface OTPVerificationModalProps {
-  onVerify: () => void;
-}
+const OTPVerificationModal = ({ email }: { email: string }) => {
+  const [otp, setOtp] = useState("");
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const dispatch = useDispatch<any>();
 
-const OTPVerificationModal = ({ onVerify }: OTPVerificationModalProps) => {
+  const handleVerify = () => {
+    const payload = {
+      email: email,
+      otp: otp,
+    };
+    dispatch(verifyOTP(payload));
+    Keyboard.dismiss();
+  };
+
   return (
-    <View className="absolute h-full w-full bottom-0 justify-end">
+    <View className="absolute h-full w-full bottom-0 bg-black/30 justify-end z-50">
       <View className="w-full h-60">
         <View className="bg-white h-full p-4 rounded-t-3xl">
           <Text
@@ -19,15 +31,13 @@ const OTPVerificationModal = ({ onVerify }: OTPVerificationModalProps) => {
             Enter OTP
           </Text>
           <View className="mt-4">
-            {/* otp input */}
             <OtpInput
               numberOfDigits={6}
               focusColor={"#0D7C9C"}
-              onTextChange={(text) => console.log(text)}
               type="numeric"
-              onFilled={() => onVerify()}
+              onTextChange={(value) => setOtp(value)}
             />
-            <CTAButton title="Verify" onPress={onVerify} />
+            <CTAButton title="Verify" onPress={handleVerify} />
           </View>
         </View>
       </View>
