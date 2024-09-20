@@ -14,7 +14,7 @@ import {
 } from "@expo-google-fonts/outfit";
 import LoginSignupModal from "@/components/modals/login-signup";
 import { StyleSheet, View } from "react-native";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import store from "../redux/store";
 
 const RootLayout = () => {
@@ -42,7 +42,6 @@ const RootLayout = () => {
             <Stack.Screen name="(tabs)" />
           </Stack>
         </View>
-        <LoginSignupModal />
       </Provider>
     </>
   );

@@ -22,7 +22,7 @@ const OTPVerificationModal = ({ email }: { email: string }) => {
 
   return (
     <View className="absolute h-full w-full bottom-0 bg-black/30 justify-end z-50">
-      <View className="w-full h-60">
+      <View className="w-full h-64">
         <View className="bg-white h-full p-4 rounded-t-3xl">
           <Text
             className="text-lg font-bold"

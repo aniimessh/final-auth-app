@@ -1,19 +1,26 @@
-import { View, Text, TextInput, ToastAndroid } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  ToastAndroid,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import CTAButton from "@/ui/Button";
 import { router } from "expo-router";
 import OTPVerificationModal from "./otp-verification";
 import { useDispatch, useSelector } from "react-redux";
-import { sendOTP } from "@/redux/slices/authSlice";
+import { sendOTP, skip } from "@/redux/slices/authSlice";
 
 const LoginSignupModal = () => {
-  const { isVerified, otpsent, status, message } = useSelector(
+  const { isVerified, otpsent, status, message, skipFornow } = useSelector(
     (state: {
       auth: {
         isVerified: boolean;
         otpsent: boolean;
         status: string;
         message: string;
+        skipFornow: boolean
       };
     }) => state.auth
   );
@@ -49,7 +56,7 @@ const LoginSignupModal = () => {
         isVerified ? "hidden" : ""
       }`}
     >
-      <View className="w-full h-64">
+      <View className="w-full h-72">
         <View className="bg-white h-full p-4 rounded-t-3xl">
           <Text
             className="text-2xl"
@@ -77,6 +84,14 @@ const LoginSignupModal = () => {
               onPress={handleContinue}
               status={status}
             />
+            <TouchableOpacity>
+              <Text
+                className="text-center mt-4"
+                onPress={() => {router.push("/"); dispatch(skip())}}
+              >
+                Skip for now
+              </Text>
+            </TouchableOpacity>
             <View className="my-3">
               <Text
                 className="text-center"

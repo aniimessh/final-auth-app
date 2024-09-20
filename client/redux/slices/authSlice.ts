@@ -42,6 +42,7 @@ const initialState = {
   data: null,
   status: "idle",
   message: "",
+  skipFornow: false
 };
 
 const authSlice = createSlice({
@@ -76,6 +77,7 @@ const authSlice = createSlice({
 
       try {
         // Save the JWT token to AsyncStorage
+        // await AsyncStorage.clear();
         await AsyncStorage.setItem("jwt", action.payload.jwt);
       } catch (error) {
         console.error("Error saving JWT token to AsyncStorage:", error);
@@ -105,7 +107,10 @@ const authSlice = createSlice({
         console.error("Error removing JWT token from AsyncStorage:", error);
       }
     },
+    skip: (state) => {
+      state.skipFornow = true
+    }
   },
 });
-export const { logout } = authSlice.actions;
+export const { logout, skip } = authSlice.actions;
 export default authSlice.reducer;

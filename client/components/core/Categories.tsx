@@ -30,9 +30,9 @@ const SkeletonBanner = () => {
         alwaysBounceVertical={false}
         // key={item}
       >
-        {[1, 2, 3, 4, 5].map((item) => (
+        {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
           <View
-            className="h-16 w-16 bg-gray-500/10 rounded-md mr-4"
+            className="h-14 w-14 bg-gray-500/10 rounded-md mr-4"
             key={item}
           />
         ))}
