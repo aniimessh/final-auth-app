@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema(
     },
     addresses: [
       {
+        isPrimary: {
+          type: Boolean,
+          default: false,
+        },
         street: {
           type: String,
         },

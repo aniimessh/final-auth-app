@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const authRoute = require("./routes/auth-route.js");
 const userRoute = require("./routes/user-route.js");
 const constRoute = require("./routes/constants-route.js");
+
 const connectDB = require("./db/connectMongo.js");
 
 dotenv.config();
@@ -24,7 +25,7 @@ const port = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://localhost:5173"],
     credentials: true,
   })
 );
@@ -42,10 +43,12 @@ app.get("/", (req, res) => {
   res.send("Yes! Server is up and running");
 });
 
+// error route
 app.use((err, req, res) => {
   res.status(400).json({ message: err.message });
 });
 
+// wild route
 app.use("*", (req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
