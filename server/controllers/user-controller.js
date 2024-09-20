@@ -54,7 +54,45 @@ const updateUserDetails = async (req, res) => {
   }
 };
 
+const updateUserAddress = async (req, res) => {
+  try {
+    const id = req.query.userId;
+    const { street, city, state, zip } = req.body;
+
+    const updateUser = await User.findById(id);
+
+    if (!updateUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const addressIndex = updateUser.addresses.findIndex(
+      (address) => address.isPrimary
+    );
+    if (addressIndex === -1) {
+      updateUser.addresses.push({ isPrimary: true, street, city, state, zip });
+    } else {
+      updateUser.addresses[addressIndex] = {
+        isPrimary: true,
+        street,
+        city,
+        state,
+        zip,
+      };
+    }
+
+    await updateUser.save();
+
+    return res.status(200).json({
+      message: "User address updated successfully",
+    });
+  } catch (error) {
+    console.log("error in updateUserAddress controller", error.message);
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getUserById,
   updateUserDetails,
+  updateUserAddress,
 };

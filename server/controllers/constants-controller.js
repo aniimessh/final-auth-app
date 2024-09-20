@@ -23,7 +23,8 @@ const getCategoriesHomePage = async (req, res) => {
     const categories = await Category.find().select({
       __v: 0,
     });
-    return res.status(200).json({ categories });
+    const totalCount = categories.length;
+    return res.status(200).json({ totalResults: totalCount, categories });
   } catch (error) {
     console.log("error in getCategories controller", error.message);
     return res.status(500).json({ error: error.message });
