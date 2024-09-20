@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 
 const authRoute = require("./routes/auth-route.js");
 const userRoute = require("./routes/user-route.js");
+const constRoute = require("./routes/constants-route.js");
 const connectDB = require("./db/connectMongo.js");
 
 dotenv.config();
@@ -35,6 +36,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/const", constRoute);
 
 app.get("/", (req, res) => {
   res.send("Yes! Server is up and running");
