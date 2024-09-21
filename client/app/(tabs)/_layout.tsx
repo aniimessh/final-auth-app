@@ -12,7 +12,7 @@ const RootLayout = () => {
   const { isVerified, skipFornow } = useSelector(
     (state: { auth: { isVerified: boolean, skipFornow: boolean } }) => state.auth
   );
-  console.log("is verifdies in index", isVerified);
+  console.log("is verified in index", isVerified);
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const dispatch = useDispatch<any>();
   useEffect(() => {

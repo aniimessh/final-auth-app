@@ -1,12 +1,19 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity } from "react-native";
+import React from "react";
+import { router } from "expo-router";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { SafeAreaView } from "react-native-safe-area-context";
+import StatusBar from "@/components/shared/Statusbar";
 
 const LocationPage = () => {
   return (
-    <View>
-      <Text>LocationPage</Text>
-    </View>
-  )
-}
+    <SafeAreaView className="bg-white flex-1">
+      <StatusBar title="Location" />
+      <View>
+        <Text>Hello World</Text>
+      </View>
+    </SafeAreaView>
+  );
+};
 
-export default LocationPage
+export default LocationPage;

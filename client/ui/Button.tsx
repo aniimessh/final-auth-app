@@ -6,14 +6,15 @@ type ButtonProps = {
   onPress?: () => void;
   svg?: React.SVGAttributes<SVGElement>;
   status?: string;
+  customCSS?: string;
 };
 
-const CTAButton = ({ title, onPress, svg, status }: ButtonProps) => {
+const CTAButton = ({ title, onPress, svg, status, customCSS }: ButtonProps) => {
   return (
     <TouchableOpacity
       className={`py-4 mt-3 rounded-lg bg-green w-full ${
         status === "loading" && "opacity-50"
-      }`}
+      } ${customCSS}`}
       onPress={onPress}
       disabled={status === "loading"}
     >
@@ -23,7 +24,7 @@ const CTAButton = ({ title, onPress, svg, status }: ButtonProps) => {
           fontFamily: "Outfit_400Regular",
         }}
       >
-        {status === "loading" ? <Text>Sending OTP</Text> : title}
+        {status === "loading" ? <Text>Loading...</Text> : title}
       </Text>
     </TouchableOpacity>
   );
