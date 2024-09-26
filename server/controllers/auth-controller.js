@@ -51,7 +51,11 @@ const verifyMobileOtp = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "OTP verified successfully", jwt: token });
+      .json({
+        message: "OTP verified successfully",
+        jwt: token,
+        id: newUser._id,
+      });
   } catch (error) {
     console.log("error in verifyOtp controller", error.message);
     return res.status(500).json({ error: error.message });
